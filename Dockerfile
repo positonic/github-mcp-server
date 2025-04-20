@@ -10,11 +10,11 @@ RUN go env -w GOMODCACHE=/root/.cache/go-build
 
 # Install dependencies
 COPY go.mod go.sum ./
-RUN --mount=type=cache,id=9359a4f4-b2f0-4c86-8385-fafa52355594-github-mcp-server-gomodcache,target=/root/.cache/go-build go mod download
+RUN --mount=type=cache,id=9359a4f4-b2f0-4c86-8385-fafa52355594-/root/.cache/go-build,target=/root/.cache/go-build go mod download
 
 COPY . ./
 # Build the server
-RUN --mount=type=cache,id=gobuildcache,target=/root/.cache/go-build CGO_ENABLED=0 go build -ldflags="-s -w -X main.version=${VERSION} -X main.commit=$(git rev-parse HEAD) -X main.date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+RUN --mount=type=cache,id=9359a4f4-b2f0-4c86-8385-fafa52355594-/root/.cache/go-build,target=/root/.cache/go-build CGO_ENABLED=0 go build -ldflags="-s -w -X main.version=${VERSION} -X main.commit=$(git rev-parse HEAD) -X main.date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
     -o github-mcp-server cmd/github-mcp-server/main.go
 
 # Make a stage to run the app
